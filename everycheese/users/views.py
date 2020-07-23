@@ -7,9 +7,11 @@ from django.views.generic import (
     UpdateView,
 )
 
-User = get_user_model()
+User = get_user_model() # We are getting the user model from models.py
 
 
+# This class will only be seen by those users that are logged in due to LoginRequiredMixin command
+# UserDetailView is a subclass od DetailView generic class from Django
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     # These Next Two Lines Tell the View to Index
@@ -24,15 +26,17 @@ user_detail_view = UserDetailView.as_view()
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     fields = [
         "name",
+        "bio"
     ]
 
     # We already imported user in the View code above,
     #   remember?
-    model = User
+    model = User ## Even though it's obvious from UserUpdateView that this view 
+    ## affects the USER modl, we still have to set the view's model explicity
 
     # Send the User Back to Their Own Page after a
     #   successful Update
-    def get_success_url(self):
+    def get_success_url(self): ## This is a default method for Django
         return reverse(
             "users:detail",
             kwargs={'username': self.request.user.username},

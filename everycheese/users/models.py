@@ -8,10 +8,14 @@ class User(AbstractUser):
 
     # First Name and Last Name Do Not Cover Name Patterns
     # Around the Globe.
+
+    ## We are retrieving name variable from the database
     name = models.CharField(
         _("Name of User"), blank=True, max_length=255
     )
+    bio = models.TextField("Bio", blank=True)
 
+    ## We are retriing the username variable from the URL
     def get_absolute_url(self):
         return reverse(
             "users:detail", kwargs={"username": self.username}
